@@ -17,17 +17,14 @@ def register(request):
     else:
         # Обработка заполненной формы.
         form = UserCreationForm(data=request.POST)
-
         if form.is_valid():
             new_user = form.save()
-
-            # Выполнение входа и перенаправление на домашнюю страницу.
+            # Log the user in and then redirect to home page.
             authenticated_user = authenticate(username=new_user.username,
                                               password=request.POST['password1'])
             login(request, authenticated_user)
             return HttpResponseRedirect(reverse('learning_logs:index'))
+
     context = {'form': form}
     return render(request, 'users/register.html', context)
-
-
 
